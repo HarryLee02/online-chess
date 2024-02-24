@@ -77,4 +77,9 @@ var board = null
     }
     board = Chessboard('myBoard', config)
 
+
+    $('#startPosition').on('click', board.start)
+    $('#clearBoard').on('click', board.clear)
+    $('#flip').on('click', board.flip)
+
     updateStatus()
