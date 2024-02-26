@@ -29,8 +29,11 @@ function onDrop (source, target) {
         var audio = new Audio('sound/capture.mp3')
         audio.play()
     }
-    else {
+    else if (game.turn() === 'w'){
         var audio = new Audio('sound/move-self.mp3')
+        audio.play()
+    } else {
+        var audio = new Audio('sound/move-opponent.mp3')
         audio.play()
     }
     updateStatus()
@@ -95,4 +98,10 @@ board = Chessboard('myBoard', config)
 $('#startPosition').on('click', board.start)
 $('#clearBoard').on('click', board.clear)
 $('#flip').on('click', board.flip)
+$('#RuyLopez').on('click', function () {
+    board.position('r1bqkbnr/pppp1ppp/2n5/1B2p3/4P3/5N2/PPPP1PPP/RNBQK2R')
+})
+$('#QueensGambit').on('click', function () {
+    board.position('rnbqkbnr/ppp1pppp/8/3p4/2PP4/8/PP2PPPP/RNBQKBNR')
+  })
 updateStatus()
