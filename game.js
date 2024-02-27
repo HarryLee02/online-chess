@@ -3,7 +3,7 @@ var game = new Chess()
 var $status = $('#status')
 var $fen = $('#fen')
 var $pgn = $('#pgn')
-
+var $opening = $('#opening')
 function onDragStart (source, piece, position, orientation) {
     // do not pick up pieces if the game is over
     if (game.game_over()) return false
@@ -82,6 +82,7 @@ function updateStatus () {
     $status.html(status)
     $fen.html(game.fen())
     $pgn.html(game.pgn())
+    $opening.html()
 }
 
 
@@ -98,10 +99,15 @@ board = Chessboard('myBoard', config)
 $('#startPosition').on('click', board.start)
 $('#clearBoard').on('click', board.clear)
 $('#flip').on('click', board.flip)
+
+$('#Restart').on('click',function(){
+    
+})
+
 $('#RuyLopez').on('click', function () {
     board.position('r1bqkbnr/pppp1ppp/2n5/1B2p3/4P3/5N2/PPPP1PPP/RNBQK2R')
 })
 $('#QueensGambit').on('click', function () {
     board.position('rnbqkbnr/ppp1pppp/8/3p4/2PP4/8/PP2PPPP/RNBQKBNR')
-  })
+})
 updateStatus()
