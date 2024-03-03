@@ -10,7 +10,62 @@ var whiteSquareGrey = '#4f8252'
 var blackSquareGrey = '#9ec991'
 
 
+function makeRandomMove () { // random move
+    var possibleMoves = game.moves()
+    // game over
+    if (possibleMoves.length === 0) return
+    var randomIdx = Math.floor(Math.random() * possibleMoves.length)
+    var move = game.move(possibleMoves[randomIdx])
+    if (move.captured){
+        var audio = new Audio('sound/capture.mp3')
+        audio.play()
+    }
+    else if (game.turn() === 'w'){
+        var audio = new Audio('sound/move-self.mp3')
+        audio.play()
+    } else {
+        var audio = new Audio('sound/move-opponent.mp3')
+        audio.play()
+    }
+    board.position(game.fen())
+}
 
+function makeCaptureMove () { // capture everything if possible
+    var possibleMoves = game.moves()
+    // game over
+    if (possibleMoves.length === 0) return
+
+    var move
+    var flag = 0
+    for (let x in possibleMoves){
+        if (possibleMoves[x].includes('x'))
+        {
+            move = game.move(possibleMoves[x])
+            flag = 1
+            break
+        }
+    }
+    if (flag === 0)
+    {
+        var randomIdx = Math.floor(Math.random() * possibleMoves.length)
+        move = game.move(possibleMoves[randomIdx])
+    }
+    board.position(game.fen())
+
+    
+    if (move.captured){
+        var audio = new Audio('sound/capture.mp3')
+        audio.play()
+    }
+    else if (game.turn() === 'w'){
+        var audio = new Audio('sound/move-self.mp3')
+        audio.play()
+    } else {
+        var audio = new Audio('sound/move-opponent.mp3')
+        audio.play()
+    }
+    board.position(game.fen())
+}
 
 
 function removeGreySquares () {
@@ -72,6 +127,7 @@ function onDrop (source, target) {
 
     // illegal move
     if (move === null) return 'snapback'
+    window.setTimeout(makeCaptureMove, 250)
     if (move.captured){
         var audio = new Audio('sound/capture.mp3')
         audio.play()
@@ -112,9 +168,22 @@ function updateStatus () {
             }
             // draw?
             else if (game.in_draw()) {
-                status = 'Game over, drawn position'
+                if (game.in_stalemate())
+                {
+                    status = 'Stalemate, Bad luck'
+                }
+                else if (game.insufficient_material())
+                {
+                    status = 'Insufficient material.'
+                }
+                else if (game.in_threefold_repetition())
+                {
+                    status = 'Threefold repetition'
+                }
+                var audio1 = new Audio('sound/game-end.mp3')
+                audio1.play()
             }
-            engineRunning = false
+           
     }
     
     // game still on
