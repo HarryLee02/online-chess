@@ -1,3 +1,4 @@
+
 var board = null
 var game = new Chess()
 var $status = $('#status')
@@ -7,6 +8,10 @@ var $opening = $('#opening')
 
 var whiteSquareGrey = '#4f8252'
 var blackSquareGrey = '#9ec991'
+
+
+
+
 
 function removeGreySquares () {
     $('#myBoard .square-55d63').css('background', '')
@@ -96,20 +101,22 @@ function updateStatus () {
     }
 
 // checkmate?
-    if (game.in_checkmate()) {
-        var audio = new Audio('sound/move-check.mp3')
-        var audio1 = new Audio('sound/game-end.mp3')
-        audio.play()
-        setTimeout(function(){audio1.play();},800)
-        
-        status = 'Game over, ' + moveColor + ' is in checkmate.'
+    if (game.game_over())
+    {
+        if (game.in_checkmate()) {
+            var audio = new Audio('sound/move-check.mp3')
+            var audio1 = new Audio('sound/game-end.mp3')
+            audio.play()
+            setTimeout(function(){audio1.play();},800)
+            status = 'Game over, ' + moveColor + ' is in checkmate.'
+            }
+            // draw?
+            else if (game.in_draw()) {
+                status = 'Game over, drawn position'
+            }
+            engineRunning = false
     }
-
-    // draw?
-    else if (game.in_draw()) {
-        status = 'Game over, drawn position'
-    }
-
+    
     // game still on
     else {
         status = moveColor + ' to move'
@@ -143,8 +150,15 @@ board = Chessboard('myBoard', config)
 $('#startPosition').on('click', board.start)
 $('#clearBoard').on('click', board.clear)
 $('#flip').on('click', board.flip)
-
-$('#Restart').on('click',function(){
+$('#Restart').on('click', function (){
+    board = null
+    game = new Chess()
+    $fen.empty()
+    $pgn.empty()
+    board = Chessboard('myBoard', config)
+    board.start()
+    board.orientation('white');
+    
     
 })
 
