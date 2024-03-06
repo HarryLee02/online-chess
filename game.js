@@ -1,4 +1,5 @@
 import {INPUT_EVENT_TYPE, COLOR, Chessboard, BORDER_TYPE} from "./src/Chessboard.js"
+import { Arrows } from "./src/assets/extensions/Arrows.js"
 import {MARKER_TYPE, Markers} from "./src/assets/extensions/Markers.js"
 import {PROMOTION_DIALOG_RESULT_TYPE, PromotionDialog} from "./src/assets/extensions/PromotionDialog.js"
 import {Chess} from "https://cdn.jsdelivr.net/npm/chess.mjs@1/src/chess.mjs/Chess.js"
@@ -89,8 +90,9 @@ const board = new Chessboard(document.getElementById("myBoard"), {
     style: {borderType: BORDER_TYPE.none, pieces: {file: "pieces/staunty.svg"}, animationDuration: 300},
     orientation: COLOR.white,
     extensions: [
-        {class: Markers, props: {autoMarkers: MARKER_TYPE.square}},
-        {class: PromotionDialog}
+        {class: Markers, autoMarkers: MARKER_TYPE.frame},
+        {class: PromotionDialog},
+        {class: Arrows}
     ]
 })
 board.enableMoveInput(inputHandler, COLOR.white)
