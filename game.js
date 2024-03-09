@@ -87,7 +87,7 @@ function inputHandler(event) {
 const board = new Chessboard(document.getElementById("myBoard"), {
     position: chess.fen(),
     assetsUrl: "./src/assets/",
-    style: {borderType: BORDER_TYPE.none, pieces: {file: "pieces/staunty.svg"}, animationDuration: 300},
+    style: {borderType: BORDER_TYPE.frame, pieces: {file: "pieces/staunty.svg"}, animationDuration: 300},
     orientation: COLOR.white,
     extensions: [
         {class: Markers, autoMarkers: MARKER_TYPE.frame},
