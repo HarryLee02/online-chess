@@ -1,4 +1,4 @@
-import {Chess} from "./chess.js"
+import {Chess} from './chess.js'
 
 var board = null
 var game = new Chess()
@@ -19,14 +19,21 @@ function onDragStart (source, piece, position, orientation) {
 
 function onDrop (source, target) {
   // see if the move is legal
-  var move = game.move({
+  try{
+    var move = game.move({
     from: source,
     to: target,
     promotion: 'q' // NOTE: always promote to a queen for example simplicity
   })
+  }
+  catch(err)
+  {
+      return 'snapback'
+  }
+  
 
   // illegal move
-  if (move === null) return 'snapback'
+  // if (move === null) 
 
   updateStatus()
 }
@@ -60,7 +67,7 @@ function updateStatus () {
     status = moveColor + ' to move'
 
     // check?
-    if (game.inCheck()) {
+    if (game.isCheck()) {
       status += ', ' + moveColor + ' is in check'
     }
   }
@@ -80,3 +87,32 @@ var config = {
 board = Chessboard('myBoard', config)
 
 updateStatus()
+
+$('#setRuyLopezBtn').on('click', function () {
+  var config = {
+    draggable: true,
+    position: 'r1bqkbnr/pppp1ppp/2n5/1B2p3/4P3/5N2/PPPP1PPP/RNBQK2R',
+    onDragStart: onDragStart,
+    onDrop: onDrop,
+    onSnapEnd: onSnapEnd
+  }
+  board = Chessboard('myBoard', config)
+  game.load('r1bqkbnr/pppp1ppp/2n5/1B2p3/4P3/5N2/PPPP1PPP/RNBQK2R w KQkq d6 0 2')
+})
+
+
+
+$('#changeTheme').on('click', function () {
+  var config = {
+    pieceTheme:leipzig_piece_theme,
+    boardTheme:leipzig_board_theme,
+    draggable: true,
+    position: 'start',
+    onDragStart: onDragStart,
+    onDrop: onDrop,
+    onSnapEnd: onSnapEnd
+  }
+  board = Chessboard('myBoard', config)
+  game = new Chess()
+  // game.load('r1bqkbnr/pppp1ppp/2n5/1B2p3/4P3/5N2/PPPP1PPP/RNBQK2R w KQkq d6 0 2')
+})
